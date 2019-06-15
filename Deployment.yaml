@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dockerdemo2
+spec:
+  selector:
+    matchLabels:
+      component: dockerdemo2
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        component: dockerdemo2
+    spec:
+      containers:
+        - name: dockerdemo2
+          image: ACRaksmustafa.azurecr.io/dockerdemo 
+          ports:
+            - containerPort: 5555
+      imagePullSecrets:
+         - name: acr-auth
+         
+---
+apiVersion: v1
+kind: Service
+metadata:
+ name: dockerdemo2
+spec:
+ type: LoadBalancer
+ ports:
+ - port: 80
+ selector:
+  app: dockerdemo2
